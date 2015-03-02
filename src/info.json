@@ -1,9 +1,9 @@
 {
   "name": "Item Collectors",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "title": "Item Collectors",
   "author": "Rseding91",
   "homepage": "",
-  "dependencies": ["base"],
+  "dependencies": ["base >= 0.11.16"],
   "description": "A chest that picks up items on the ground."
 }

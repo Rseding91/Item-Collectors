@@ -64,16 +64,11 @@ function processCollectors()
 			if #items > 0 then
 				inventory = collector.getinventory(1)
 				for _,item in pairs(items) do
-					belt = game.findentitiesfiltered({area = {{x = item.position.x - 0.4, y = item.position.y - 0.4}, {x = item.position.x + 0.4, y = item.position.y + 0.4}}, type = "transport-belt"})
-					
-					if #belt == 0 then
-						belt = game.findentitiesfiltered({area = {{x = item.position.x - 0.4, y = item.position.y - 0.4}, {x = item.position.x + 0.4, y = item.position.y + 0.4}}, type = "transport-belt-to-ground"})
-						if #belt == 0 then
-							if inventory.caninsert(item.stack) then
-								inventory.insert(item.stack)
-								item.destroy()
-								break
-							end
+					if not item.isitemonbelt then
+						if inventory.caninsert(item.stack) then
+							inventory.insert(item.stack)
+							item.destroy()
+							break
 						end
 					end
 				end

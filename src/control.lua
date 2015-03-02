@@ -64,7 +64,7 @@ function processCollectors()
 			if #items > 0 then
 				inventory = collector.getinventory(1)
 				for _,item in pairs(items) do
-					if not item.isitemonbelt then
+					if not item.isitemonbelt() then
 						if inventory.caninsert(item.stack) then
 							inventory.insert(item.stack)
 							item.destroy()

@@ -3,6 +3,15 @@ require "defines"
 local loaded
 local radius = 25
 local chestInventoryIndex = defines.inventory.chest
+local filters = {["small-alien-artifact"] = 1,
+                 ["alien-artifact"] = 1,
+                 ["small-corpse"] = 1,
+                 ["medium-corpse"] = 1,
+                 ["big-corpse"] = 1,
+                 ["berserk-corpse"] = 1,
+                 ["elder-corpse"] = 1,
+                 ["king-corpse"] = 1,
+                 ["queen-corpse"] = 1}
 
 function ticker()
 	if global.itemCollectors ~= nil then
@@ -69,7 +78,7 @@ function processCollectors()
 				inventory = collector.get_inventory(chestInventoryIndex)
 				for _,item in pairs(items) do
           local stack = item.stack
-          if inventory.can_insert(stack) then
+          if filters[stack.name] == 1 and inventory.can_insert(stack) then
             inventory.insert(stack)
             item.destroy()
             break

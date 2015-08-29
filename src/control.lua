@@ -1,82 +1,85 @@
 require "defines"
 
 local loaded
+local radius = 25
+local chestInventoryIndex = defines.inventory.chest
 
 function ticker()
-	if glob.itemCollectors ~= nil then
-		if glob.ticks == 0 or glob.ticks == nil then
-			glob.ticks = 59
+	if global.itemCollectors ~= nil then
+		if global.ticks == 0 or global.ticks == nil then
+			global.ticks = 59
 			processCollectors()
 		else
-			glob.ticks = glob.ticks - 1
+			global.ticks = global.ticks - 1
 		end
 	else
-		game.onevent(defines.events.ontick, nil)
+		game.on_event(defines.events.on_tick, nil)
 	end
 end
 
-game.onload(function()
+game.on_load(function()
 	if not loaded then
 		loaded = true
 		
-		if glob.itemCollectors ~= nil then
-			game.onevent(defines.events.ontick, ticker)
+		if global.itemCollectors ~= nil then
+			game.on_event(defines.events.on_tick, ticker)
 		end
 	end
 end)
 
-game.oninit(function()
+game.on_init(function()
 	loaded = true
 	
-	if glob.itemCollectors ~= nil then
-		game.onevent(defines.events.ontick, ticker)
+	if global.itemCollectors ~= nil then
+		game.on_event(defines.events.on_tick, ticker)
 	end
 end)
 
 function builtEntity(event)
 	local newCollector
 	
-	if event.createdentity.name == "item-collector-area" then
-		newCollector = game.createentity({name = "item-collector", position = event.createdentity.position, force = game.forces.player})
-		event.createdentity.destroy()
+	if event.created_entity.name == "item-collector-area" then
+    local surface = event.created_entity.surface
+    local force = event.created_entity.force
+		newCollector = surface.create_entity({name = "item-collector", position = event.created_entity.position, force = force})
+		event.created_entity.destroy()
 		
-		if glob.itemCollectors == nil then
-			glob.itemCollectors = {}
-			game.onevent(defines.events.ontick, ticker)
+		if global.itemCollectors == nil then
+			global.itemCollectors = {}
+			game.on_event(defines.events.on_tick, ticker)
 		end
 		
-		table.insert(glob.itemCollectors, newCollector)
+		table.insert(global.itemCollectors, newCollector)
 	end
 end
 
-game.onevent(defines.events.onbuiltentity, builtEntity)
-game.onevent(defines.events.onrobotbuiltentity, builtEntity)
+game.on_event(defines.events.on_built_entity, builtEntity)
+game.on_event(defines.events.on_robot_built_entity, builtEntity)
 
 function processCollectors()
 	local items
 	local inventory
 	local belt
 	
-	for k,collector in pairs(glob.itemCollectors) do
+	for k,collector in pairs(global.itemCollectors) do
 		if collector.valid then
-			items = game.findentitiesfiltered({area = {{x = collector.position.x - 25, y = collector.position.y - 25}, {x = collector.position.x + 25, y = collector.position.y + 25}}, name = "item-on-ground"})
+			items = collector.surface.find_entities_filtered({area = {{x = collector.position.x - radius, y = collector.position.y - radius}, {x = collector.position.x + radius, y = collector.position.y + radius}}, name = "item-on-ground"})
 			
 			if #items > 0 then
-				inventory = collector.getinventory(1)
+				inventory = collector.get_inventory(chestInventoryIndex)
 				for _,item in pairs(items) do
-					if not item.isitemonbelt() then
-						if inventory.caninsert(item.stack) then
-							inventory.insert(item.stack)
-							item.destroy()
-							break
-						end
-					end
+          local stack = item.stack
+          if inventory.can_insert(stack) then
+            inventory.insert(stack)
+            item.destroy()
+            break
+          end
 				end
 			end
 		else
-			table.remove(glob.itemCollectors, k)
-			if #glob.itemCollectors == 0 then
-				glob.itemCollectors = nil
+			table.remove(global.itemCollectors, k)
+			if #global.itemCollectors == 0 then
+				global.itemCollectors = nil
 			end
 		end
 	end

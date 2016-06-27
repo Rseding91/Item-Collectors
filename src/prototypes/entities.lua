@@ -3,7 +3,7 @@ data:extend(
 		{
 			type = "container",
 			name = "item-collector",
-			icon = "__base__/graphics/icons/smart-chest.png",
+			icon = "__Item Collectors__/graphics/icons/smart-chest.png",
 			flags = {"placeable-neutral", "player-creation"},
 			open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
 			close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
@@ -25,7 +25,7 @@ data:extend(
 			inventory_size = 48,
 			picture =
 			{
-				filename = "__base__/graphics/entity/smart-chest/smart-chest.png",
+				filename = "__Item Collectors__/graphics/smart-chest.png",
 				priority = "extra-high",
 				width = 62,
 				height = 41,
@@ -35,7 +35,7 @@ data:extend(
 		{
 			type = "container",
 			name = "item-collector-area",
-			icon = "__base__/graphics/icons/smart-chest.png",
+			icon = "__Item Collectors__/graphics/icons/smart-chest.png",
 			flags = {"placeable-neutral", "player-creation"},
 			open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
 			close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },

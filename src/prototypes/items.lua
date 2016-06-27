@@ -3,7 +3,7 @@ data:extend(
 		{
 			type = "item",
 			name = "item-collector-area",
-			icon = "__base__/graphics/icons/smart-chest.png",
+			icon = "__Item Collectors__/graphics/icons/smart-chest.png",
 			flags = {"goes-to-quickbar"},
 			subgroup = "storage",
 			order = "i[item-collector]",

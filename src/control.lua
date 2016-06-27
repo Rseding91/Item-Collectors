@@ -1,6 +1,4 @@
-require "defines"
 
-local loaded
 local radius = 25
 local chestInventoryIndex = defines.inventory.chest
 
